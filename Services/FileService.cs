@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Runtime.InteropServices;
-
-namespace REBingo.Services;
+﻿namespace REBingo.Services;
 
 public class FileService
 {
@@ -28,7 +25,7 @@ public class FileService
                          "\": {\"conditions\": {\"items\": [{\"items\": [\"" + itemName +
                          "\"]}],\"player\": [{\"condition\":\"minecraft:value_check\",\"value\": {\"type\":\"minecraft:score\",\"target\": {\"type\": \"minecraft:fixed\",\"name\": \"" +
                          itemName + "speed" + "\" },\"score\": \"global\"},\"range\": {\"min\": 1}}]},\"trigger\": \"minecraft:inventory_changed\"}},\"requirements\": [[\"" +
-                         itemName + "speed" + "\"]],\"rewards\": {\"function\": \"flytre:detect/" + itemName + "speed" +"/base\"}}";
+                         itemName + "speed" + "\"]],\"rewards\": {\"function\": \"flytre:detect/" + itemName + "speed" + "/base\"}}";
         CreateFile(BaseSpeedPath + Advancements + itemName + "speed" + ".json", content);
     }
 
@@ -51,7 +48,7 @@ public class FileService
     public void CreateDetectFiles(string itemName)
     {
         var baseContent =
-            $"scoreboard players set @s clear 0 execute unless score lockout stage matches 1..2 unless score red { itemName + "speed" } matches 1.. as @s[team=red] run scoreboard players set @s clear 1 execute unless score lockout stage matches 1 unless score yellow { itemName + "speed" } matches 1.. as @s[team=yellow] run scoreboard players set @s clear 1 execute unless score lockout stage matches 1 unless score green { itemName + "speed" } matches 1.. as @s[team=green] run scoreboard players set @s clear 1 execute unless score lockout stage matches 1 unless score blue { itemName + "speed" } matches 1.. as @s[team=blue] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed { itemName + "speed" } matches 1.. as @s[team=red] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed { itemName + "speed" } matches 1.. as @s[team=yellow] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed { itemName + "speed" } matches 1.. as @s[team=green] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed { itemName + "speed" } matches 1.. as @s[team=blue] run scoreboard players set @s clear 1 execute as @s[scores={{clear=1..}},team=red] run scoreboard players set red { itemName + "speed" } 1 execute as @s[scores={{clear=1..}},team=yellow] run scoreboard players set yellow { itemName + "speed" } 1 execute as @s[scores={{clear=1..}},team=green] run scoreboard players set green { itemName + "speed" } 1 execute as @s[scores={{clear=1..}},team=blue] run scoreboard players set blue { itemName + "speed" } 1 execute as @s[scores={{clear=1..}}] run scoreboard players set completed { itemName + "speed" } 1 execute as @s[scores={{clear=1..}}] run function flytre:detect/{ itemName + "speed" }/gottenadvancement revoke @s only flytre:detection/{ itemName + "speed" }";
+            $"scoreboard players set @s clear 0 execute unless score lockout stage matches 1..2 unless score red {itemName + "speed"} matches 1.. as @s[team=red] run scoreboard players set @s clear 1 execute unless score lockout stage matches 1 unless score yellow {itemName + "speed"} matches 1.. as @s[team=yellow] run scoreboard players set @s clear 1 execute unless score lockout stage matches 1 unless score green {itemName + "speed"} matches 1.. as @s[team=green] run scoreboard players set @s clear 1 execute unless score lockout stage matches 1 unless score blue {itemName + "speed"} matches 1.. as @s[team=blue] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed {itemName + "speed"} matches 1.. as @s[team=red] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed {itemName + "speed"} matches 1.. as @s[team=yellow] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed {itemName + "speed"} matches 1.. as @s[team=green] run scoreboard players set @s clear 1 execute if score lockout stage matches 1 unless score completed {itemName + "speed"} matches 1.. as @s[team=blue] run scoreboard players set @s clear 1 execute as @s[scores={{clear=1..}},team=red] run scoreboard players set red {itemName + "speed"} 1 execute as @s[scores={{clear=1..}},team=yellow] run scoreboard players set yellow {itemName + "speed"} 1 execute as @s[scores={{clear=1..}},team=green] run scoreboard players set green {itemName + "speed"} 1 execute as @s[scores={{clear=1..}},team=blue] run scoreboard players set blue {itemName + "speed"} 1 execute as @s[scores={{clear=1..}}] run scoreboard players set completed {itemName + "speed"} 1 execute as @s[scores={{clear=1..}}] run function flytre:detect/{itemName + "speed"}/gottenadvancement revoke @s only flytre:detection/{itemName + "speed"}";
         CreateFile(BaseSpeedPath + Detect + "base.mcfunction", baseContent);
 
         var gottenContent =
@@ -71,17 +68,48 @@ public class FileService
 
             var fileContent = new List<string>(File.ReadAllLines(BaseSpeedPath + Structure + mcfunction.Name));
 
-            var temp = fileContent[^1];
-            fileContent[^1] = content;
+            var temp = fileContent[^2];
+            fileContent.Add(content);
             fileContent.Add(temp);
+            File.WriteAllLines(BaseSpeedPath + Structure + mcfunction.Name, fileContent);
         }
     }
 
     public void CreateAll0File(string itemName)
     {
         var content = $"scoreboard players set {itemName + "speed"} global 0";
+        File.AppendAllText(All0, content);
     }
-    
+
+    public void CreatePickRandomFile(string itemName)
+    {
+        var content = new List<string>
+        {
+            $"execute if score x rng matches 0 unless score {itemName + "speed"} global matches 0 run scoreboard players set failed global 1",
+            $"execute if score x rng matches 0 if score {itemName + "speed"} global matches 0 run scoreboard players operation {itemName + "speed"} global = trial global"
+        };
+        var fileContent = new List<string>(File.ReadAllLines(BaseSpeedPath + PickRandom));
+        var counter = 0;
+        foreach (var s in fileContent)
+        {
+            if (s.Contains("execute"))
+                counter += 1;
+        }
+        counter = (counter - 1) / 2;
+
+        foreach (var s in fileContent)
+        {
+            if (s.Contains(counter.ToString()))
+            {
+                fileContent[fileContent.IndexOf(s)] = s.Replace(counter.ToString(), (counter + 1).ToString());
+            }
+        }
+        var temp = fileContent[^2];
+        fileContent.AddRange(content);
+        fileContent.Add(temp);
+        File.WriteAllLines(BaseSpeedPath + PickRandom, fileContent);
+    }
+
 
     public void CreateFile(string path, string content)
     {
