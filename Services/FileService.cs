@@ -1,6 +1,9 @@
-﻿namespace REBingo.Services;
+﻿using System.IO;
+using System.Runtime.InteropServices;
 
-public class FolderService
+namespace REBingo.Services;
+
+public class FileService
 {
     public readonly string BaseSpeedPath = "./datapacks/speed_set/";
     public readonly string Advancements = "data/flytre/advancements/detection";
@@ -17,5 +20,37 @@ public class FolderService
     {
         Directory.CreateDirectory(BaseSpeedPath + Predicates + itemName);
         Directory.CreateDirectory(BaseSpeedPath + Detect + itemName);
+    }
+
+    public void CreateAdvancementFile(string itemName)
+    {
+        var content = "{\"parent\":\"flytre:items/root\",\"criteria\": {\"" + itemName + "speed" +
+                         "\": {\"conditions\": {\"items\": [{\"items\": [\"" + itemName +
+                         "\"]}],\"player\": [{\"condition\":\"minecraft:value_check\",\"value\": {\"type\":\"minecraft:score\",\"target\": {\"type\": \"minecraft:fixed\",\"name\": \"" +
+                         itemName + "speed" + "\" },\"score\": \"global\"},\"range\": {\"min\": 1}}]},\"trigger\": \"minecraft:inventory_changed\"}},\"requirements\": [[\"" +
+                         itemName + "speed" + "\"]],\"rewards\": {\"function\": \"flytre:detect/bedSpeed/base\"}}";
+        CreateFile(BaseSpeedPath + Advancements, content);
+    }
+
+    public void CreateClarifyFile(string itemName)
+    {
+        var di = new DirectoryInfo(BaseSpeedPath + Clarify);
+        var mcfunctions = di.GetFiles("*.mcfunction");
+
+        foreach (var mcfunction in mcfunctions)
+        {
+            if (mcfunction.Name.Equals("base.mcfunction"))
+                continue;
+            var content =
+                $"execute if score {itemName + "speed"} global matches {mcfunction.Name.Split('.')[0]} run tellraw @s [\"\",{{\"text\":\"The item in slot {mcfunction.Name.Split('.')[0]} is {itemName}]";
+            var sw = mcfunction.AppendText();
+            sw.WriteLine(content);
+        }
+    }
+
+    public void CreateFile(string path, string content)
+    {
+        using StreamWriter sw = File.CreateText(path);
+        sw.WriteLine(content);
     }
 }
