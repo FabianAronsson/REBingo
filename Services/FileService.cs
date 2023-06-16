@@ -76,6 +76,11 @@ public class FileService
             fileContent.Add(temp);
         }
     }
+
+    public void CreateAll0File(string itemName)
+    {
+        var content = $"scoreboard players set {itemName + "speed"} global 0";
+    }
     
 
     public void CreateFile(string path, string content)
