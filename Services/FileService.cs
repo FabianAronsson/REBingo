@@ -1,4 +1,7 @@
-﻿namespace REBingo.Services;
+﻿using System.Text.Json;
+using REBingo.Models;
+
+namespace REBingo.Services;
 
 public class FileService
 {
@@ -12,6 +15,7 @@ public class FileService
     public readonly string ResetBoardColors = "data/flytre/functions/reset_board_colors.mcfunction";
     public readonly string AddItemObjectives = "./datapacks/base_generated/data/flytre/functions/add_item_objectives.mcfunction";
     public readonly string Predicates = "data/flytre/predicates";
+    public readonly string LootTable = "data/flytre/loot_tables/bingo_item.json";
 
     public void CreateFolders(string itemName)
     {
@@ -148,6 +152,26 @@ public class FileService
         CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", yellow);
         CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", green);
         CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", main);
+    }
+
+    public void UpdateLootTable(string itemName)
+    {
+        var json = File.ReadAllText(BaseSpeedPath + LootTable);
+        var lootTable = JsonSerializer.Deserialize<LootTable>(json);
+        lootTable.pools[0].entries.Add(new Entry
+        {
+            conditions = new List<Condition>
+            {
+                new()
+                {
+                    condition = "minecraft:reference",
+                    name = $"flytre:{itemName}/main"
+                }
+            }, name = itemName, type = "minecraft:item"
+        });
+
+        var content = JsonSerializer.Serialize(lootTable);
+        CreateFile(BaseSpeedPath + LootTable, content);
     }
 
     public void CreateFile(string path, string content)
