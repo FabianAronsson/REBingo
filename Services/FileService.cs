@@ -15,7 +15,7 @@ public class FileService
 
     public void CreateFolders(string itemName)
     {
-        Directory.CreateDirectory(BaseSpeedPath + Predicates + itemName);
+        Directory.CreateDirectory(BaseSpeedPath + Predicates + itemName + "speed");
         Directory.CreateDirectory(BaseSpeedPath + Detect + itemName + "speed");
     }
 
@@ -130,7 +130,25 @@ public class FileService
 
     public void UpdateAddObjectives(string itemName) => File.AppendAllText(BaseSpeedPath + AddItemObjectives, $"scoreboard objectives add {itemName + "speed"} dummy");
 
+    public void UpdatePredicateFiles(string itemName)
+    {
+        var blue =
+            $"[{{\"condition\": \"minecraft:entity_properties\",\"entity\": \"this\",\"predicate\": {{\"team\": \"blue\"}}}},{{\"condition\": \"minecraft:value_check\",\"value\": {{\"type\": \"minecraft:score\",\"target\": {{\"type\": \"minecraft:fixed\",\"name\": \"blue\"}},\"score\": \"{itemName + "speed"}\"}},\"range\": 0  }}]";
+        var red =
+            $"[{{\"condition\": \"minecraft:entity_properties\",\"entity\": \"this\",\"predicate\": {{\"team\": \"red\"}}}},{{\"condition\": \"minecraft:value_check\",\"value\": {{\"type\": \"minecraft:score\",\"target\": {{\"type\": \"minecraft:fixed\",\"name\": \"red\"}},\"score\": \"{itemName + "speed"}\"}},\"range\": 0  }}]";
+        var yellow =
+            $"[{{\"condition\": \"minecraft:entity_properties\",\"entity\": \"this\",\"predicate\": {{\"team\": \"yellow\"}}}},{{\"condition\": \"minecraft:value_check\",\"value\": {{\"type\": \"minecraft:score\",\"target\": {{\"type\": \"minecraft:fixed\",\"name\": \"yellow\"}},\"score\": \"{itemName + "speed"}\"}},\"range\": 0  }}]";
+        var green =
+            $"[{{\"condition\": \"minecraft:entity_properties\",\"entity\": \"this\",\"predicate\": {{\"team\": \"green\"}}}},{{\"condition\": \"minecraft:value_check\",\"value\": {{\"type\": \"minecraft:score\",\"target\": {{ \"type\": \"minecraft:fixed\",\"name\": \"green\"}},\"score\": \"{itemName + "speed"}\"}},\"range\": 0  }}]";
+        var main =
+            $"[{{\"condition\":\"minecraft:value_check\",\"value\":{{\"type\": \"minecraft:score\",\"target\":{{\"type\": \"minecraft:fixed\",\"name\":\"{itemName + "speed"}\"}},\"score\":\"global\"}},\"range\": {{\"min\": 1}}}},{{\"condition\":\"minecraft:alternative\",\"terms\":[{{\"condition\":\"minecraft:reference\",\"name\":\"flytre:{itemName + "speed"}/red\"}},{{\"condition\":\"minecraft:reference\",\"name\":\"flytre:{itemName + "speed"}/yellow\"}},{{\"condition\":\"minecraft:reference\",\"name\":\"flytre:{itemName + "speed"}/green\"}},{{\"condition\": \"minecraft:reference\",\"name\":\"flytre:{itemName + "speed"}/blue\"}}]}},{{\"condition\": \"minecraft:alternative\",\"terms\":[{{\"condition\": \"minecraft:inverted\",\"term\": {{\"condition\": \"minecraft:value_check\",\"value\": {{\"type\": \"minecraft:score\",\"target\": {{\"type\": \"minecraft:fixed\",\"name\": \"lockout\"}},\"score\": \"stage\"}},\"range\": 1}}}},{{\"condition\": \"minecraft:inverted\",\"term\": {{\"condition\": \"minecraft:value_check\",\"value\": {{\"type\": \"minecraft:score\",\"target\": {{\"type\": \"minecraft:fixed\",\"name\": \"completed\"}},\"score\": \"{itemName + "speed"}\"}},\"range\": {{\"min\": 1}}}}}}]}}]";
 
+        CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", blue);
+        CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", red);
+        CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", yellow);
+        CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", green);
+        CreateFile(BaseSpeedPath + Predicates + itemName + "speed.json", main);
+    }
 
     public void CreateFile(string path, string content)
     {
