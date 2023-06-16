@@ -110,6 +110,23 @@ public class FileService
         File.WriteAllLines(BaseSpeedPath + PickRandom, fileContent);
     }
 
+    public void CreateResetBoardColorsFile(string itemName)
+    {
+        var fileContent = new List<string>(File.ReadAllLines(BaseSpeedPath + ResetBoardColors));
+        var content = new List<string>
+        {
+            $"scoreboard players reset red {itemName + "speed" }",
+            $"scoreboard players reset yellow {itemName + "speed" }",
+            $"scoreboard players reset green {itemName + "speed" }",
+            $"scoreboard players reset blue {itemName + "speed" }",
+            $"scoreboard players reset completed {itemName + "speed" }",
+        };
+
+        var temp = fileContent[^2];
+        fileContent.AddRange(content);
+        fileContent.Add(temp);
+        File.WriteAllLines(BaseSpeedPath + PickRandom, fileContent);
+    }
 
     public void CreateFile(string path, string content)
     {
