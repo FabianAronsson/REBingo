@@ -128,14 +128,14 @@ public class FileService
         File.WriteAllLines(BaseSpeedPath + PickRandom, fileContent);
     }
 
-    public void UpdateAddObjectives(string itemName)
-    {
+    public void UpdateAddObjectives(string itemName) => File.AppendAllText(BaseSpeedPath + AddItemObjectives, $"scoreboard objectives add {itemName + "speed"} dummy");
 
-    }
+
 
     public void CreateFile(string path, string content)
     {
         using StreamWriter sw = File.CreateText(path);
         sw.WriteLine(content);
+        sw.Close();
     }
 }
