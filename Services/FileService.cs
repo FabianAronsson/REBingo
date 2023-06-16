@@ -29,7 +29,7 @@ public class FileService
         CreateFile(BaseSpeedPath + Advancements + itemName + "speed" + ".json", content);
     }
 
-    public void CreateClarifyFiles(string itemName)
+    public void UpdateClarifyFiles(string itemName)
     {
         var di = new DirectoryInfo(BaseSpeedPath + Clarify);
         var mcfunctions = di.GetFiles("*.mcfunction");
@@ -56,7 +56,7 @@ public class FileService
         CreateFile(BaseSpeedPath + Detect + "gotten.mcfunction", baseContent);
     }
 
-    public void CreateStructureFile(string itemName)
+    public void UpdateStructureFile(string itemName)
     {
         var di = new DirectoryInfo(BaseSpeedPath + Structure);
         var mcfunctions = di.GetFiles("*.mcfunction");
@@ -75,13 +75,13 @@ public class FileService
         }
     }
 
-    public void CreateAll0File(string itemName)
+    public void UpdateAll0File(string itemName)
     {
         var content = $"scoreboard players set {itemName + "speed"} global 0";
         File.AppendAllText(All0, content);
     }
 
-    public void CreatePickRandomFile(string itemName)
+    public void UpdatePickRandomFile(string itemName)
     {
         var content = new List<string>
         {
@@ -110,7 +110,7 @@ public class FileService
         File.WriteAllLines(BaseSpeedPath + PickRandom, fileContent);
     }
 
-    public void CreateResetBoardColorsFile(string itemName)
+    public void UpdateResetBoardColorsFile(string itemName)
     {
         var fileContent = new List<string>(File.ReadAllLines(BaseSpeedPath + ResetBoardColors));
         var content = new List<string>
@@ -126,6 +126,11 @@ public class FileService
         fileContent.AddRange(content);
         fileContent.Add(temp);
         File.WriteAllLines(BaseSpeedPath + PickRandom, fileContent);
+    }
+
+    public void UpdateAddObjectives(string itemName)
+    {
+
     }
 
     public void CreateFile(string path, string content)
