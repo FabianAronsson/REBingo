@@ -84,7 +84,7 @@ public static class FileService
         foreach (var mcfunction in mcfunctions)
         {
             var content =
-                $"execute if score {itemName + "speed"} global matches {mcfunction.Name.Split('.')[0]} as @e[type=armor_stand,tag=bingo,tag={mcfunction.Name.Split('.')[0]}] at @s run setblock ~ ~ ~ minecraft:structure_block[mode=load]{{metadata:\"\",mirror:\"NONE\",ignoreEntities:1b,powered:0b,rotation:\"NONE\",posX:0,mode:\"LOAD\",posY:-17,sizeX:16,posZ:0,name:\"flytre:{itemName + "speed" + "structure.nbt"}, sizeY:32,sizeZ:16,showboundingbox:1b}}";
+                $"execute if score {itemName + "speed"} global matches {mcfunction.Name.Split('.')[0]} as @e[type=armor_stand,tag=bingo,tag={mcfunction.Name.Split('.')[0]}] at @s run setblock ~ ~ ~ minecraft:structure_block[mode=load]{{metadata:\"\",mirror:\"NONE\",ignoreEntities:1b,powered:0b,rotation:\"NONE\",posX:0,mode:\"LOAD\",posY:-17,sizeX:16,posZ:0,name:\"flytre:{itemName + "speed" + "structure"}\", sizeY:32,sizeZ:16,showboundingbox:1b}}";
 
             var fileContent = new List<string>(File.ReadAllLines(BaseSpeedPath + Structure + mcfunction.Name));
 
