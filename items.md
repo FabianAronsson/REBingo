@@ -430,6 +430,9 @@ also change the main file:
 
 - **Remember to update the loot table aswell!**
 
+
+## The items below are just some ideas we had when creating the tool with new difficulties. 
+At the bottom you can find our current difficulty we usually run.
 ### Ultra Speed
 
 - Button
@@ -462,29 +465,29 @@ also change the main file:
 - Andestite
 - Coal Block
 - Coarse Dirt
-- Colored Glass **trans**
+- Colored Glass **transparent**
 - Bed
 - Tuff
 - Banner
 - Carpet
-- Leaves **trans**
+- Leaves **transparent**
 - Daisy
-- Glow Licen **trans**
+- Glow Licen **transparent**
 - Rose
 - Peony
 - Sea Grass
-- Jack o' lantern **separat**
-- Stonecutter **separat**
+- Jack o' lantern **separetely**
+- Stonecutter **separetely**
 - Cartographer's table
 - Loom
 - Grinding stone
 - Ladder
 - Lightning Rod
-- Chiseled Book Case **separat**
+- Chiseled Book Case **separetely**
 - Hanging sign
-- Lectern **separat**
+- Lectern **separetely**
 - Shears
-- Shield **separat**
+- Shield **separetely**
 - Leather Horse Armor
 - Nugget
 - Cooked Chicken
@@ -499,8 +502,8 @@ also change the main file:
 - Concrete powder (yellow)
 - Concrete (red)
 - bone block
-- Fence Gate **separat**
-- Stair **separat**
+- Fence Gate **separetely**
+- Stair **separetely**
 - Golden Pressure plate
 - Dripleaf
 - Cookie
