@@ -1,6 +1,6 @@
 ## Items
-
-- **Advancment**
+Where it says ```bedSpeed```, will be the value you will use to name your new difficulty.
+- **Advancement**
 
 ```lua
 {
