@@ -37,3 +37,8 @@ If successful, a message will be displayed and the modpack will have been modifi
 Now you can import the datapack into Minecraft and enjoy the new items. 
 
 Keep in mind that this does not create any icons as they need to be created separetley. The modpack will work fine, but it might be difficult to know what items you are trying to get ;)
+
+
+# Future Plans
+- Create a graphical interface for easy creation of sets and difficulties
+- Automatic generation of NBT-Icon files
